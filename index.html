@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#11141c" />
+<title>Eti Library — Your Night-time Reading Room</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scene" aria-hidden="true">
+  <div class="ceiling-glow"></div>
+  <div class="shelf-wall" id="shelfWall"></div>
+  <div class="window">
+    <div class="night-sky"><div class="moon"></div></div>
+    <div class="city"><div class="building"></div><div class="building"></div><div class="building"></div><div class="building"></div><div class="building"></div><div class="building"></div><div class="building"></div><div class="building"></div></div>
+    <div class="street"></div>
+    <div class="person p1"><em></em><i></i></div><div class="person p2"><em></em><i></i></div><div class="person p3"><em></em><i></i></div>
+    <div class="window-cross-v"></div><div class="window-cross-h"></div><div class="rain"></div>
+  </div>
+  <div class="floor"></div><div class="lamp-glow"></div><div class="grain"></div>
+</div>
+<div class="veil"></div>
+<div class="spot" aria-hidden="true"></div>
+<canvas id="dust" aria-hidden="true"></canvas>
+<header class="topbar">
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5.5c3.2-.9 5.9-.3 8 1.8v12c-2.1-2.1-4.8-2.7-8-1.8z"/><path d="M20 5.5c-3.2-.9-5.9-.3-8 1.8v12c2.1-2.1 4.8-2.7 8-1.8z"/><path d="M7 9h2M7 12h2M15 9h2M15 12h2"/></svg></div><span>Eti Library</span></div>
+  <div class="top-actions"><div class="open-note"><span class="live-dot"></span> The reading room is open</div><button class="quiet-btn" id="openSettings" type="button">API Settings&nbsp; ↗</button></div>
+</header>
+<main class="wrap">
+  <section class="intro">
+    <div class="eyebrow">A little magic after dark</div>
+    <h1>Find your next<br><em>favorite story.</em></h1>
+    <p class="subhead">Tell me what you love, and I’ll bring three books to your table. The rain can wait. Your next world is right here.</p>
+  </section>
+  <div class="main-grid">
+    <section class="panel preferences" aria-labelledby="prefsTitle">
+      <div class="panel-heading"><h2 id="prefsTitle">Your reading mood</h2><span class="step">01 / 02</span></div>
+      <form id="preferencesForm">
+        <div class="field"><label for="genre">What do you feel like reading?</label><select id="genre" required><option value="Fantasy">Fantasy & magic</option><option value="Mystery">Mystery & secrets</option><option value="Romance">Romance</option><option value="Science fiction">Science fiction</option><option value="Literary fiction">Literary fiction</option><option value="Classics">Classics</option><option value="Thriller">Thriller & suspense</option><option value="Horror">Horror & the uncanny</option><option value="Historical fiction">Historical fiction</option><option value="Adventure">Adventure</option><option value="Nonfiction">Nonfiction</option><option value="Poetry">Poetry</option><option value="Graphic novels">Graphic novels</option><option value="Any genre">Surprise me</option></select></div>
+        <div class="two-fields"><div class="field"><label for="age">Reader age</label><input id="age" type="number" min="5" max="120" placeholder="e.g. 19" required /></div><div class="field"><label for="language">Book language</label><select id="language" required><option value="English">English</option><option value="Persian">Persian</option><option value="German">German</option><option value="French">French</option><option value="Spanish">Spanish</option><option value="Turkish">Turkish</option><option value="Any language">Any language</option></select></div></div>
+        <div class="field"><label for="others">Anything else on your mind?</label><textarea id="others" placeholder="A favorite trope, a mood, a book you loved, content to avoid…"></textarea></div>
+        <p class="helper">I’ll use your age and preferences to tailor the suggestions. No spoilers — just the feeling of a story before you step inside.</p>
+        <button class="primary-btn" id="recommendBtn" type="submit"><span>Find My Three Books</span><span class="arrow">↗</span></button>
+      </form>
+      <div class="secondary-row"><button type="button" id="sampleBtn">Explore the sample shelf</button><button type="button" id="clearBtn">Clear preferences</button></div>
+      <div class="key-status" id="keyStatus"><span></span><div>API key not added yet · open API Settings</div></div>
+      <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+    </section>
+    <section class="stage-wrap" aria-labelledby="tableTitle">
+      <div class="stage-top"><div><h2 class="stage-title" id="tableTitle">A place at the table</h2><p class="stage-caption" id="stageCaption">A few classics, while your perfect list finds its way here.</p></div><div class="result-count" id="resultCount">Sample shelf · 03 books</div></div>
+      <div class="table-scene">
+        <div class="table-lamp"></div><div class="distant-shelf"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="stage-meta"><span class="mini-label">Curated for a quiet evening</span><span class="moon-icon">☾</span></div>
+        <div class="empty-note hidden" id="emptyNote">The next chapter is being chosen…</div>
+        <div class="books-row" id="booksRow" aria-label="Recommended books"></div>
+        <div class="tabletop"></div><div class="table-edge"></div>
+        <div class="stage-footnote">Choose a cover to open your book</div>
+      </div>
+      <div class="below-stage"><span><strong>Three books.</strong> Three different worlds.</span><span>Made for your kind of curiosity.</span></div>
+    </section>
+  </div>
+</main>
+<footer class="footer"><span>Eti Library · A room of your own</span><span class="footer-note">Take your time. The best stories do.</span></footer>
+
+<div class="overlay" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="settings-card">
+    <div class="settings-heading"><div><h2 id="settingsTitle">Connect the library</h2><p>Add your API details to let Eti find fresh, personalized recommendations.</p></div><button class="close-btn" id="closeSettings" aria-label="Close settings" type="button">×</button></div>
+    <div class="field"><label for="apiBase">API base URL</label><input id="apiBase" type="url" value="https://api.gapgpt.app/v1" autocomplete="url" spellcheck="false" /></div>
+    <div class="field"><label for="modelName">Chat model</label><input id="modelName" type="text" value="gapgpt-gemma-26b-a4b" spellcheck="false" /></div>
+    <div class="field"><label for="imageModel">Image model (cover art)</label><input id="imageModel" type="text" value="gapgpt/qwen-image-2.1" spellcheck="false" /></div>
+    <div class="two-fields"><div class="field"><label for="ttsModel">Voice model</label><input id="ttsModel" type="text" value="gpt-4o-mini-tts" spellcheck="false" /></div><div class="field"><label for="voice">Voice</label><select id="voice"><option>alloy</option><option>nova</option><option>shimmer</option><option>echo</option><option>fable</option><option>onyx</option></select></div></div>
+    <div class="field"><label for="apiKey">API key</label><input id="apiKey" type="password" placeholder="Paste your new API key here" autocomplete="off" spellcheck="false" /></div>
+    <div class="security-note"><strong>A small but important safety note.</strong> Your key stays in this tab’s memory and is not written into this HTML file or local storage. A browser-based page cannot keep a key truly secret from its user, and requests may be visible in developer tools. Use a private local copy only; for a public website, route requests through a server-side backend.</div>
+    <div class="settings-actions"><button type="button" class="quiet-btn" id="forgetKey">Forget key</button><button type="button" class="primary-btn" id="saveSettings">Save settings</button></div>
+  </div>
+</div>
+
+<div class="overlay reading-overlay" id="readingOverlay" role="dialog" aria-modal="true" aria-label="Book details">
+  <div class="reading-modal">
+    <div class="reading-top"><span class="small-label">A new chapter, just for you</span><button class="close-btn" id="closeReading" aria-label="Close book" type="button">×</button></div>
+    <div class="book-spread">
+      <div class="paper left"><div class="folio">Eti Library · Selected edition</div><div class="reading-cover-art" id="readerCover"><img class="reader-img" id="readerImage" alt="Generated cover art"><div class="gen-overlay" id="genOverlay"><div class="loading-orbit big"></div><span>Painting your cover…</span></div><div class="reader-cover-stamp">A book to get lost in</div><div class="reader-cover-title" id="readerCoverTitle">The Secret Garden</div><div class="reader-cover-author" id="readerCoverAuthor">Frances Hodgson Burnett</div><div class="reader-cover-stamp">Open slowly</div></div></div>
+      <article class="paper right"><div class="folio">Your spoiler-free reading note</div><h2 id="readerTitle">The Secret Garden</h2><p class="authorline" id="readerAuthor">by Frances Hodgson Burnett</p><div class="rule"></div><h3>Step inside</h3><p id="readerDescription" class="body-copy">A lonely, curious child discovers a hidden garden and, along the way, the possibility of friendship and renewal.</p><h3>Why it might be your kind of book</h3><p id="readerWhy">A gentle, atmospheric classic for readers who love secrets, nature, and quiet personal growth.</p><div class="theme-tags" id="readerTags"><span class="theme-tag">Secrets</span><span class="theme-tag">Nature</span></div></article>
+    </div>
+    <div class="reading-controls"><div style="display:flex;gap:9px;flex-wrap:wrap"><button class="read-btn" type="button" id="readAloudBtn"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="rl-ic">▷</span><span class="rl-text">Read this note aloud</span></button><button class="read-btn" type="button" id="stopReadingBtn">Ⅱ &nbsp; Stop audio</button><button class="read-btn accent" type="button" id="genImageBtn"><span>✦</span><span class="gi-text">Paint this cover</span></button><a class="read-btn" id="saveImage" hidden download="cover.png" href="#">Save image</a><button class="read-btn close-book" type="button" id="closeBookBtn">✕ &nbsp; Close book</button></div><div class="reading-disclaimer">This is a spoiler-free guide to the book, not the full copyrighted text. Choose a title from your shelf to read its note. Cover art is generated by AI.</div></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
